@@ -163,33 +163,33 @@ If using PHP on a server and this widget will reflect a physical file system on 
 Once entries are populating in the widget, various bits of navigation functionality should start working.  The widget is starting to come to life but is mostly read only.  Let's add an `onrename` handler so users can press F2 or click on the text of a selected item to rename the item:
 
 ```js
-		// Note:  'entry' is a copy of the original, so it is okay to modify any aspect of it, including 'id'.
-		onrename: function(renamed, folder, entry, newname) {
-			var xhr = new this.PrepareXHR({
-				url: '/yourapp/',
-				params: {
-					action: 'file_explorer_rename',
-					path: JSON.stringify(folder.GetPathIDs()),
-					id: entry.id,
-					newname: newname,
-					xsrftoken: 'asdfasdf'
-				},
-				onsuccess: function(e) {
-					var data = JSON.parse(e.target.response);
+	// Note:  'entry' is a copy of the original, so it is okay to modify any aspect of it, including 'id'.
+	onrename: function(renamed, folder, entry, newname) {
+		var xhr = new this.PrepareXHR({
+			url: '/yourapp/',
+			params: {
+				action: 'file_explorer_rename',
+				path: JSON.stringify(folder.GetPathIDs()),
+				id: entry.id,
+				newname: newname,
+				xsrftoken: 'asdfasdf'
+			},
+			onsuccess: function(e) {
+				var data = JSON.parse(e.target.response);
 console.log(data);
 
-					// Updating the existing entry or passing in a completely new entry to the renamed() callback are okay.
-					if (data.success)  renamed(data.entry);
-					else  renamed(data.error);
-				},
-				onerror: function(e) {
+				// Updating the existing entry or passing in a completely new entry to the renamed() callback are okay.
+				if (data.success)  renamed(data.entry);
+				else  renamed(data.error);
+			},
+			onerror: function(e) {
 console.log(e);
-					renamed('Server/network error.');
-				}
-			});
+				renamed('Server/network error.');
+			}
+		});
 
-			xhr.Send();
-		},
+		xhr.Send();
+	},
 ```
 
 A lot is going on here.  When the user finishes renaming an item, `onrename` is called, which hands the request off to an AJAX request to the server to handle.  During this operation, the textarea is marked read only and the busy state on the folder is enabled.  When the AJAX operation completes, it must call `renamed()` to let the widget know that the operation has been completed and indicate success by passing in a compatible entry object - either a modified `entry` or a new entry from the server.  On failure, a boolean of false or a string that is passed to renamed() to be used as part of the error message displayed to the user.
