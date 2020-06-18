@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="Page-1" transform="matrix(11.8519,0,0,11.8519,21.3333,21.3333)">
+        <g transform="matrix(0.084375,0,0,0.084375,-1.8,-1.8)">
+            <rect x="37" y="36" width="182" height="182" style="fill:white;"/>
+        </g>
+        <g id="Core">
+            <g id="check-box-outline-blank">
+                <path id="Shape" d="M16,2L16,16L2,16L2,2L16,2ZM16,0L2,0C0.9,0 0,0.9 0,2L0,16C0,17.1 0.9,18 2,18L16,18C17.1,18 18,17.1 18,16L18,2C18,0.9 17.1,0 16,0Z" style="fill:rgb(52,53,54);"/>
+            </g>
+        </g>
+        <g id="Shape1" serif:id="Shape" transform="matrix(1,0,0,1,0.580078,-0.380078)">
+            <path d="M7,14L2,9L3.4,7.6L7,11.2L13.44,4.76L14.84,6.16L7,14Z" style="fill:rgb(52,53,54);"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,42 @@
+/* -----------------------------------------------------
+   created with https://www.codeandweb.com/texturepacker 
+   -----------------------------------------------------
+   $TexturePacker:SmartUpdate:3d63a344f597624cc50262f980d290ee:3e53d0e35e4e13e7188d2e87a76f1465:8f4ee330d84e56b65b32ddff57a8b78e$
+   -----------------------------------------------------
+
+   usage: <span class="{-spritename-} sprite"></span>
+
+   replace {-spritename-} with the sprite you like to use
+
+*/
+
+.sprite {display:inline-block; overflow:hidden; background-repeat: no-repeat;background-image:url(file-explorer-sprites.png);}
+
+.fileexplorer_arrow_left_icon {width:32px; height:24px; background-position: -0px -0px}
+.fileexplorer_arrow_left_icon_hover {width:32px; height:24px; background-position: -32px -0px}
+.fileexplorer_arrow_right_icon {width:32px; height:24px; background-position: -64px -0px}
+.fileexplorer_arrow_right_icon_hover {width:32px; height:24px; background-position: -96px -0px}
+.fileexplorer_arrow_up_icon {width:24px; height:24px; background-position: -0px -24px}
+.fileexplorer_arrow_up_icon_hover {width:24px; height:24px; background-position: -24px -24px}
+.fileexplorer_collapsed_icon {width:18px; height:24px; background-position: -48px -24px}
+.fileexplorer_collapsed_icon_hover {width:18px; height:24px; background-position: -66px -24px}
+.fileexplorer_expanded_icon {width:18px; height:24px; background-position: -84px -24px}
+.fileexplorer_expanded_icon_hover {width:18px; height:24px; background-position: -102px -24px}
+.fileexplorer_item_file_icon {width:48px; height:48px; background-position: -0px -48px}
+.fileexplorer_item_folder_icon {width:48px; height:48px; background-position: -48px -48px}
+.fileexplorer_menu_back_icon {width:24px; height:24px; background-position: -96px -48px}
+.fileexplorer_menu_check_icon {width:24px; height:24px; background-position: -0px -96px}
+.fileexplorer_menu_forward_icon {width:24px; height:24px; background-position: -24px -96px}
+.fileexplorer_open_icon {width:24px; height:24px; background-position: -48px -96px}
+.fileexplorer_path_cloud_icon {width:24px; height:24px; background-position: -72px -96px}
+.fileexplorer_path_icon {width:24px; height:24px; background-position: -96px -96px}
+.fileexplorer_tool_checked_icon {width:24px; height:24px; background-position: -0px -120px}
+.fileexplorer_tool_copy_icon {width:24px; height:24px; background-position: -24px -120px}
+.fileexplorer_tool_cut_icon {width:24px; height:24px; background-position: -48px -120px}
+.fileexplorer_tool_delete_icon {width:24px; height:24px; background-position: -72px -120px}
+.fileexplorer_tool_download_icon {width:24px; height:24px; background-position: -96px -120px}
+.fileexplorer_tool_new_file_icon {width:24px; height:24px; background-position: -0px -144px}
+.fileexplorer_tool_new_folder_icon {width:24px; height:24px; background-position: -24px -144px}
+.fileexplorer_tool_paste_icon {width:24px; height:24px; background-position: -48px -144px}
+.fileexplorer_tool_unchecked_icon {width:24px; height:24px; background-position: -72px -144px}
+.fileexplorer_tool_upload_icon {width:24px; height:24px; background-position: -96px -144px}
