@@ -39,7 +39,7 @@ Features
 * Items can have detailed tooltips, overlays, size information, etc.
 * Automatic item sorting (can be disabled per folder).
 * Provides useful feedback on the status bar - items in a folder, number selected, active upload information, etc.
-* Can easily be connected to a WebSocket backend (e.g. (Data Relay Center](https://github.com/cubiclesoft/php-drc)) to efficiently watch for folder updates.
+* Can easily be connected to a WebSocket backend (e.g. [Data Relay Center](https://github.com/cubiclesoft/php-drc)) to efficiently watch for folder updates.
 * Event-handler style callbacks.  Way more callbacks than you'll probably need.
 * Plenty of automation possibilities too via the extensive [FileExplorer API](docs/file_explorer.md).
 * Multilingual support.
