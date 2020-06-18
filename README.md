@@ -85,7 +85,6 @@ Next, create an instance of the FileExplorer class inside a closure for security
 			// Make a call to your server here to get some entries to diplay.
 			// this.PrepareXHR(options) could be useful for doing that.  Example:
 
-/*
 			var $this = this;
 
 			var xhr = new this.PrepareXHR({
@@ -111,7 +110,6 @@ console.log(e);
 			});
 
 			xhr.Send();
-*/
 		},
 
 		// This will be covered in a moment...
@@ -128,7 +126,7 @@ That code will produce a less-than-exciting 'Loading...' view and also doesn't s
 
 ![A loading screen](https://user-images.githubusercontent.com/1432111/83955169-e4c9fe00-a804-11ea-9275-a19db61ec4a7.png)
 
-The next step is to connect the widget to the backend server.  There are many ways to do that.  The widget instance itself exports the [PrepareXHR class](docs/prepare_xhr.md) to make AJAX calls.  Or you could use a framework specific mechanism of your choice (jQuery, Vue, whatever) or talk to a WebSocket server or whatever makes sense for your application.  The entries returned from the server should ideally be compatible with [Folder.SetEntries](docs/folder.md#folder-setentries).
+The next step is to connect the widget to the backend server.  There are many ways to do that.  The widget instance itself exports the [PrepareXHR class](docs/prepare_xhr.md) to make AJAX calls.  Or you could use a framework specific mechanism of your choice (jQuery, Vue, whatever) or talk to a WebSocket server or whatever makes sense for your application.  The entries returned from the server should ideally be compatible with [Folder.SetEntries](docs/folder.md#foldersetentriesnewentries).
 
 If using PHP on a server and this widget will reflect a physical file system on the same server, there is the useful [FileExplorerFSHelper PHP class](docs/file_explorer_fs_helper.md) that can simplify connecting the widget to the backend server:
 
