@@ -129,6 +129,10 @@ console.log(e);
 			xhr.Send();
 		},
 
+		onopenfile: function(folder, entry) {
+console.log(entry);
+		},
+
 		onnewfolder: function(created, folder) {
 			var xhr = new this.PrepareXHR({
 				url: window.location.href,

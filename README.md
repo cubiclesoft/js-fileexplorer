@@ -194,9 +194,9 @@ console.log(e);
 
 A lot is going on here.  When the user finishes renaming an item, `onrename` is called, which hands the request off to an AJAX request to the server to handle.  During this operation, the textarea is marked read only and the busy state on the folder is enabled.  When the AJAX operation completes, it must call `renamed()` to let the widget know that the operation has been completed and indicate success by passing in a compatible entry object - either a modified `entry` or a new entry from the server.  On failure, a boolean of false or a string that is passed to renamed() to be used as part of the error message displayed to the user.
 
-See a complete, functional implementation in the [FileExplorerFSHelper class](docs/file_explorer_fs_helper.md) documentation.
+The above examples and documentation should be enough to get the ball rolling.  Most event handler callbacks utilize a similar approach:  Receive an event callback, make a server call or two, and finally call the completion callback function with the result of the operation.  Callbacks always have the 'this' context as the FileExplorer instance.
 
-The above examples should be enough to get the ball rolling.  Most event handler callbacks utilize a similar approach:  Receive an event callback, make a server call or two, and finally call the completion callback function with the result of the operation.  Callbacks always have the 'this' context as the FileExplorer instance.
+See a complete, functional implementation of all of the important callbacks in the [FileExplorerFSHelper PHP class](docs/file_explorer_fs_helper.md) documentation.  It's an excellent starting point when utilizing the FileExplorerFSHelper class.
 
 FileExplorer Options
 --------------------
@@ -279,7 +279,7 @@ The `options` object passed to the FileExplorer class accepts the following opti
 	* recycle - A boolean hinting at whether to send items to a recycling bin (Delete) or permanently delete them (Shift + Delete).  The server is free to ignore this parameter and do whatever makes the most sense.
 * langmap - An object containing translation strings.  Support exists for most of the user interface (Default is an empty object).
 
-The [Live Demo](https://cubiclesoft.com/demos/js-fileexplorer/demo.html) utilizes nearly all of the available callbacks.  The [Live Demo source code](demo.html) was designed so as keep this documentation to a minimum and to provide decent example usage.
+The [Live Demo](https://cubiclesoft.com/demos/js-fileexplorer/demo.html) utilizes nearly all of the available callbacks.  The [Live Demo source code](demo.html) was designed so as keep this documentation to a minimum and to provide decent example usage without incurring AJAX calls.
 
 Making Custom Tools
 -------------------
