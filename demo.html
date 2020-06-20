@@ -6,6 +6,12 @@
 <body>
 <style type="text/css">
 body { font-family: Verdana, Arial, Helvetica, sans-serif; position: relative; color: #222222; font-size: 1.0em; }
+
+html.embed, html.embed body { padding: 0; margin: 0; }
+html.embed p { padding: 0; margin: 0; display: none; }
+
+#filemanager { height: 50vh; max-height: 400px; position: relative; }
+html.embed #filemanager { height: 100vh; }
 </style>
 
 <p>This is a fully functioning demo of <a href="https://github.com/cubiclesoft/js-fileexplorer">CubicleSoft File Explorer</a>.</p>
@@ -17,10 +23,14 @@ body { font-family: Verdana, Arial, Helvetica, sans-serif; position: relative; c
 <link rel="stylesheet" type="text/css" href="file-explorer/file-explorer.css">
 <script type="text/javascript" src="file-explorer/file-explorer.js"></script>
 
-<div id="filemanager" style="height: 50vh; max-height: 400px; position: relative;"></div>
+<div id="filemanager"></div>
 
 <script type="text/javascript">
 (function() {
+	// Handle iframe demo embed.
+	if (window.location.href.indexOf('embed=true') > -1)  document.documentElement.classList.add('embed');
+
+	// Back to regularly scheduled program.
 	var elem = document.getElementById('filemanager');
 
 	// Random folders and filenames.
