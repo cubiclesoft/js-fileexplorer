@@ -209,7 +209,7 @@
 						if (file_exists($filename) && $startpos === filesize($filename))  $fp = @fopen($filename, "ab");
 						else
 						{
-							$fp = @fopen($filename, ($startpos > 0 ? "r+b" : "wb"));
+							$fp = @fopen($filename, ($startpos > 0 && file_exists($filename) ? "r+b" : "wb"));
 							if ($fp !== false)  @fseek($fp, $startpos, SEEK_SET);
 						}
 
