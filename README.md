@@ -5,7 +5,7 @@ A zero dependencies, customizable, pure Javascript widget for navigating, managi
 
 [![Screenshot of CubicleSoft File Explorer](https://user-images.githubusercontent.com/1432111/83955166-e3003a80-a804-11ea-806a-07b927297ccb.png)](https://cubiclesoft.com/demos/js-fileexplorer/demo.html)
 
-[Live Demo](https://cubiclesoft.com/demos/js-fileexplorer/demo.html)
+[Live Demo](https://cubiclesoft.com/demos/js-fileexplorer/demo.html) | [The making of this widget](https://cubicspot.blogspot.com/2020/06/building-complex-javascript-widgets.html)
 
 Experience a clean, elegant presentation of folders and files in a mobile-friendly layout that looks and feels great on all devices.  CubicleSoft File Explorer is easily connected to any web application that needs to manage hierarchical objects (folders and files, database records, or even JSON, XML, etc).
 
@@ -350,6 +350,8 @@ The simplest approach to developing a new tool is to look at the existing tools.
 Some additional comments were added to the code above to aid in understanding what is going on.  There are more complex tools to look at in the FileExplorer source code (e.g. FileExplorerTool_Download).  The Class Documentation section below will be quite useful when developing a custom tool.
 
 For custom tools, you might want to prefix custom settings object keys with something like a company abbreviation so the likelihood of a naming conflict is reduced.
+
+One good idea for a custom tool might be a HTML embed tool.  If a user selects a single item and clicks the embed tool, the clipboard receives some HTML code that can be pasted into another website to embed the item into a post.
 
 Class Documentation
 -------------------
