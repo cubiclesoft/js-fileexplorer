@@ -7664,6 +7664,8 @@ console.log(selectanchorpos);
 								document.body.removeChild(iframenode);
 
 								iframenode = null;
+
+								fe.DispatchToolEvent('download_started', options);
 							}
 						};
 
@@ -7681,8 +7683,6 @@ console.log(selectanchorpos);
 								xhr = null;
 
 								tempxhr.Destroy();
-
-								fe.DispatchToolEvent('download_started', options);
 							}
 						};
 
