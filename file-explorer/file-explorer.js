@@ -7635,7 +7635,7 @@ console.log(selectanchorpos);
 					{
 						if (options.params instanceof FormData)
 						{
-							for (var entry of options.params)
+							for (var entry in options.params)
 							{
 								if (typeof entry[1] === 'string')  formnode.appendChild(CreateNode('input', [], { type: 'hidden', name: entry[0], value: entry[1] }));
 							}
