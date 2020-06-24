@@ -88,8 +88,14 @@ body { font-family: Verdana, Arial, Helvetica, sans-serif; position: relative; c
 					var data = JSON.parse(e.target.responseText);
 console.log(data);
 
-					if (data.success)  folder.SetEntries(data.entries);
-					else if (required)  $this.SetNamedStatusBarText('folder', $this.EscapeHTML('Failed to load folder.  ' + data.error));
+					if (data.success)
+					{
+						if ($this.IsMappedFolder(folder))  folder.SetEntries(data.entries);
+					}
+					else if (required)
+					{
+						$this.SetNamedStatusBarText('folder', $this.EscapeHTML('Failed to load folder.  ' + data.error));
+					}
 				},
 				onerror: function(e) {
 					// Maybe output a nice message if the request fails for some reason.

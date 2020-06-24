@@ -2,7 +2,7 @@
 .fe_fileexplorer_invisible { visibility: hidden; }
 .fe_fileexplorer_disabled { filter: grayscale(95%); opacity: 0.6; }
 
-.fe_fileexplorer_open_icon { background-image: url('fileexplorer_sprites.png'); width: 24px; height: 24px; background-position: -48px -96px; }
+.fe_fileexplorer_open_icon { background-image: url('fileexplorer_sprites.png'); width: 24px; height: 24px; background-position: -48px -96px; image-rendering: pixelated; }
 
 .fe_fileexplorer_wrap { position: relative; font-size: 1.0em; user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; cursor: default; height: 100%; min-height: 9em; }
 .fe_fileexplorer_wrap .fe_fileexplorer_operation_in_progress { cursor: progress; }

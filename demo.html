@@ -194,7 +194,7 @@ console.log(e);
 			newentries.push({ name: 'data4', type: 'folder', id: 'data4', hash: 'data4' });
 			newentries.push({ name: 'data5', type: 'folder', id: 'data5', hash: 'data5' });
 
-			folder.SetEntries(newentries);
+			if (this.IsMappedFolder(folder))  folder.SetEntries(newentries);
 		},
 
 		onrename: function(renamed, folder, entry, newname) {
