@@ -628,6 +628,7 @@
 				{
 					if ($file[0] === "." && !$options["dot_folders"])  $result = array("success" => false, "error" => self::FETranslate("The directory cannot be modified."), "errorcode" => "access_denied");
 					else if ($newname[0] === "." && !$options["dot_folders"])  $result = array("success" => false, "error" => self::FETranslate("The new directory name is not allowed."), "errorcode" => "invalid_newname");
+					else  $result = false;
 				}
 				else
 				{
@@ -636,6 +637,7 @@
 
 					if (!self::HasAllowedExt($allowedexts, $options["allow_empty_ext"], $file))  $result = array("success" => false, "error" => self::FETranslate("Original file extension is not allowed."), "errorcode" => "access_denied");
 					else if (!self::HasAllowedExt($allowedexts, $options["allow_empty_ext"], $newname))  $result = array("success" => false, "error" => self::FETranslate("New file extension is not allowed."), "errorcode" => "access_denied");
+					else  $result = false;
 				}
 
 				if ($result === false)
@@ -647,6 +649,241 @@
 						$result = array(
 							"success" => true,
 							"entry" => $entry
+						);
+					}
+				}
+			}
+
+			return $result;
+		}
+
+		public static function IsValidUTF8($data)
+		{
+			$x = 0;
+			$y = strlen($data);
+			while ($x < $y)
+			{
+				$tempchr = ord($data[$x]);
+				if (($tempchr >= 0x20 && $tempchr <= 0x7E) || $tempchr == 0x09 || $tempchr == 0x0A || $tempchr == 0x0D)  $x++;
+				else if ($tempchr < 0xC2)  return false;
+				else
+				{
+					$left = $y - $x;
+					if ($left > 1)  $tempchr2 = ord($data[$x + 1]);
+					else  return false;
+
+					if (($tempchr >= 0xC2 && $tempchr <= 0xDF) && ($tempchr2 >= 0x80 && $tempchr2 <= 0xBF))  $x += 2;
+					else
+					{
+						if ($left > 2)  $tempchr3 = ord($data[$x + 2]);
+						else  return false;
+
+						if ($tempchr3 < 0x80 || $tempchr3 > 0xBF)  return false;
+
+						if ($tempchr == 0xE0 && ($tempchr2 >= 0xA0 && $tempchr2 <= 0xBF))  $x += 3;
+						else if ((($tempchr >= 0xE1 && $tempchr <= 0xEC) || $tempchr == 0xEE || $tempchr == 0xEF) && ($tempchr2 >= 0x80 && $tempchr2 <= 0xBF))  $x += 3;
+						else if ($tempchr == 0xED && ($tempchr2 >= 0x80 && $tempchr2 <= 0x9F))  $x += 3;
+						else
+						{
+							if ($left > 3)  $tempchr4 = ord($data[$x + 3]);
+							else  return false;
+
+							if ($tempchr4 < 0x80 || $tempchr4 > 0xBF)  return false;
+
+							if ($tempchr == 0xF0 && ($tempchr2 >= 0x90 && $tempchr2 <= 0xBF))  $x += 4;
+							else if (($tempchr >= 0xF1 && $tempchr <= 0xF3) && ($tempchr2 >= 0x80 && $tempchr2 <= 0xBF))  $x += 4;
+							else if ($tempchr == 0xF4 && ($tempchr2 >= 0x80 && $tempchr2 <= 0x8F))  $x += 4;
+							else  return false;
+						}
+					}
+				}
+			}
+
+			return true;
+		}
+
+		// File Info.
+		protected static function ProcessFileInfoAction(&$options)
+		{
+			$path = self::GetSanitizedPath($options["base_dir"], "path", $options["dot_folders"]);
+
+			$name = self::GetRequestVar("id");
+			if ($name !== false)  $name = self::CleanFilename($name);
+
+			if (!isset($options["file_info"]) || !$options["file_info"])  $result = array("success" => false, "error" => self::FETranslate("Operation denied."), "errorcode" => "file_info_not_allowed");
+			else if ($path === false)  $result = array("success" => false, "error" => self::FETranslate("Invalid path specified."), "errorcode" => "invalid_path");
+			else if ($name === false || $name === "")  $result = array("success" => false, "error" => self::FETranslate("Invalid file ID specified."), "errorcode" => "invalid_id");
+			else if (!file_exists($path . "/" . $name) || !is_file($path . "/" . $name))  $result = array("success" => false, "error" => self::FETranslate("The specified file does not exist or is not a file."), "errorcode" => "invalid_file");
+			else
+			{
+				// Check allowed file extensions.
+				if (is_bool($options["allowed_exts"]))  $allowedexts = $options["allowed_exts"];
+				else  $allowedexts = self::ExtractAllowedExtensions($options["allowed_exts"]);
+
+				$info = @stat($path . "/" . $name);
+				$fp = @fopen($path . "/" . $name, "rb");
+
+				if (!self::HasAllowedExt($allowedexts, $options["allow_empty_ext"], $name))  $result = array("success" => false, "error" => self::FETranslate("The file extension is not allowed."), "errorcode" => "invalid_file_ext");
+				else if ($info === false)  $result = array("success" => false, "error" => self::FETranslate("Unable to retrieve information about the file."), "errorcode" => "stat_failed");
+				else if ($fp === false)  $result = array("success" => false, "error" => self::FETranslate("Unable to open the file."), "errorcode" => "open_failed");
+				else
+				{
+					$data = @fread($fp, 65536);
+
+					fclose($fp);
+
+					$ext = self::GetFileExt($name, "");
+					$text = self::IsValidUTF8($data);
+					$browser = false;
+
+					$pos = strrpos($data, "\n");
+					$pos2 = strrpos($data, "\r\n");
+					$pos3 = strrpos($data, "\r");
+
+					if ($pos2 !== false)
+					{
+						$textend = "\r\n";
+						$data = substr($data, 0, $pos2);
+					}
+					else if ($pos !== false)
+					{
+						$textend = "\n";
+						$data = substr($data, 0, $pos);
+					}
+					else if ($pos3 !== false)
+					{
+						$textend = "\r";
+						$data = substr($data, 0, $pos3);
+					}
+					else
+					{
+						$textend = "\n";
+					}
+
+					if (substr($data, 0, 6) === "GIF87a" || substr($data, 0, 6) === "GIF89a")  { $mimetype = "image/gif";  $browser = true; }
+					else if (substr($data, 0, 8) === "\x89PNG\x0D\x0A\x1A\x0A")  { $mimetype = "image/png";  $browser = true; }
+					else if (substr($data, 0, 2) === "\xFF\xD8" || (!$text && ($ext === "jpg" || $ext === "jpeg")))  { $mimetype = "image/jpeg";  $browser = true; }
+					else if ($text && $ext === "svg")  { $mimetype = "image/svg";  $browser = true; }
+					else if (substr($data, 0, 3) === "ID3" || (substr($data, 0, 1) === "\xFF" && ord(substr($data, 1, 1)) >= 0xE0) || (!$text && $ext === "mp3"))  { $mimetype = "audio/mp3";  $browser = true; }
+					else if (substr($data, 4, 8) === "ftypmp42" || substr($data, 4, 8) === "ftypMSNV" || substr($data, 4, 8) === "ftypisom" || (!$text && $ext === "mp4"))  { $mimetype = "video/mp4";  $browser = true; }
+					else if ($text && (stripos($data, "<!DOCTYPE") !== false || stripos($data, "<html") !== false || $ext === "html" || $ext === "htm"))  { $mimetype = "text/html";  $browser = true; }
+					else if ($text && ($ext === "xml" || stripos($data, "<" . "?xml ") !== false))  $mimetype = "text/xml";
+					else if ($text && $ext === "css")  $mimetype = "text/css";
+					else if ($text && $ext === "diff")  $mimetype = "text/diff";
+					else if ($text && $ext === "js")  $mimetype = "text/javascript";
+					else if ($text && $ext === "json")  $mimetype = "application/json";
+					else if ($text && $ext === "md")  $mimetype = "text/markdown";
+					else if ($text && $ext === "php")  $mimetype = "application/php";
+					else if ($text)  $mimetype = "text/plain";
+					else  $mimetype = "application/octet-stream";
+
+					$result = array(
+						"success" => true,
+						"windows" => $options["windows"],
+						"url" => (isset($options["base_url"]) ? $options["base_url"] . substr($path, strlen($options["base_dir"])) . "/" . $name : false),
+						"path" => self::GetRequestVar("path"),
+						"id" => self::GetRequestVar("id"),
+						"recycle_bin" => self::IsRecycleBin($path, $options),
+						"name" => $name,
+						"file_key" => substr($path, strlen($options["base_dir"])) . "/" . $name,
+						"ext" => $ext,
+						"mime_type" => $mimetype,
+						"browser" => $browser,
+						"text" => $text,
+						"text_end" => $textend,
+						"stat" => $info
+					);
+				}
+			}
+
+			return $result;
+		}
+
+		// Load File.
+		protected static function ProcessLoadFileAction(&$options)
+		{
+			$path = self::GetSanitizedPath($options["base_dir"], "path", $options["dot_folders"]);
+
+			$name = self::GetRequestVar("id");
+			if ($name !== false)  $name = self::CleanFilename($name);
+
+			if (!isset($options["load_file"]) || !$options["load_file"])  $result = array("success" => false, "error" => self::FETranslate("Operation denied."), "errorcode" => "load_file_not_allowed");
+			else if ($path === false)  $result = array("success" => false, "error" => self::FETranslate("Invalid path specified."), "errorcode" => "invalid_path");
+			else if ($name === false || $name === "")  $result = array("success" => false, "error" => self::FETranslate("Invalid file ID specified."), "errorcode" => "invalid_id");
+			else if (!file_exists($path . "/" . $name) || !is_file($path . "/" . $name))  $result = array("success" => false, "error" => self::FETranslate("The specified file does not exist or is not a file."), "errorcode" => "invalid_file");
+			else
+			{
+				// Check allowed file extensions.
+				if (is_bool($options["allowed_exts"]))  $allowedexts = $options["allowed_exts"];
+				else  $allowedexts = self::ExtractAllowedExtensions($options["allowed_exts"]);
+
+				$info = @stat($path . "/" . $name);
+				$data = @file_get_contents($path . "/" . $name);
+
+				if (!self::HasAllowedExt($allowedexts, $options["allow_empty_ext"], $name))  $result = array("success" => false, "error" => self::FETranslate("The file extension is not allowed."), "errorcode" => "invalid_file_ext");
+				else if ($info === false)  $result = array("success" => false, "error" => self::FETranslate("Unable to retrieve information about the file."), "errorcode" => "stat_failed");
+				else if ($data === false)  $result = array("success" => false, "error" => self::FETranslate("Unable to read the file."), "errorcode" => "read_failed");
+				else
+				{
+					$result = array(
+						"success" => true,
+						"hash" => md5($data),
+						"data" => base64_encode($data),
+						"stat" => $info
+					);
+				}
+			}
+
+			return $result;
+		}
+
+		// Save File.
+		protected static function ProcessSaveFileAction(&$options)
+		{
+			$path = self::GetSanitizedPath($options["base_dir"], "path", $options["dot_folders"]);
+
+			$name = self::GetRequestVar("id");
+			if ($name !== false)  $name = self::CleanFilename($name);
+
+			$userdata = self::GetRequestVar("data");
+
+			if (!isset($options["save_file"]) || !$options["save_file"])  $result = array("success" => false, "error" => self::FETranslate("Operation denied."), "errorcode" => "save_file_not_allowed");
+			else if ($path === false)  $result = array("success" => false, "error" => self::FETranslate("Invalid path specified."), "errorcode" => "invalid_path");
+			else if ($name === false || $name === "")  $result = array("success" => false, "error" => self::FETranslate("Invalid file ID specified."), "errorcode" => "invalid_id");
+			else if (!file_exists($path . "/" . $name) || !is_file($path . "/" . $name))  $result = array("success" => false, "error" => self::FETranslate("The specified file does not exist or is not a file."), "errorcode" => "invalid_file");
+			else if ($userdata === false)  $result = array("success" => false, "error" => self::FETranslate("Missing data."), "errorcode" => "missing_data");
+			else
+			{
+				// Check allowed file extensions.
+				if (is_bool($options["allowed_exts"]))  $allowedexts = $options["allowed_exts"];
+				else  $allowedexts = self::ExtractAllowedExtensions($options["allowed_exts"]);
+
+				$userhash = self::GetRequestVar("hash");
+				$startpos = self::GetRequestVar("start");
+				$endpos = self::GetRequestVar("end");
+				$userdata = @base64_decode($userdata);
+
+				$data = @file_get_contents($path . "/" . $name);
+
+				if (!self::HasAllowedExt($allowedexts, $options["allow_empty_ext"], $name))  $result = array("success" => false, "error" => self::FETranslate("The file extension is not allowed."), "errorcode" => "invalid_file_ext");
+				else if ($data === false)  $result = array("success" => false, "error" => self::FETranslate("Unable to read the existing file."), "errorcode" => "read_failed");
+				else if ($userdata === false)  $result = array("success" => false, "error" => self::FETranslate("Unable to decode data."), "errorcode" => "data_decode_failed");
+				else if ($userhash !== false && $userhash !== md5($data))  $result = array("success" => false, "error" => self::FETranslate("The existing file hash is different."), "errorcode" => "file_changed");
+				else if ($userhash !== false && ($startpos === false || (int)$startpos < 0 || (int)$startpos > strlen($data)))  $result = array("success" => false, "error" => self::FETranslate("Missing or invalid start file position."), "errorcode" => "invalid_start");
+				else if ($userhash !== false && ($endpos === false || (int)$endpos < 0 || (int)$endpos > strlen($data) || (int)$endpos < $startpos))  $result = array("success" => false, "error" => self::FETranslate("Missing or invalid end file position."), "errorcode" => "invalid_end");
+				else
+				{
+					$data = ($userhash === false ? $userdata : substr($data, 0, $startpos) . $userdata . substr($data, $endpos));
+
+					if (!@file_put_contents($path . "/" . $name, $data))  $result = array("success" => false, "error" => self::FETranslate("Unable to write file."), "errorcode" => "write_file_failed");
+					else
+					{
+						$info = @stat($path . "/" . $name);
+
+						$result = array(
+							"success" => true,
+							"hash" => md5($data),
+							"stat" => $info
 						);
 					}
 				}
@@ -760,7 +997,7 @@
 			{
 				$depth = self::GetPathDepth($path, $options["base_dir"]);
 
-				// Only download allowed file extensions.
+				// Check allowed file extensions.
 				if (is_bool($options["allowed_exts"]))  $allowedexts = $options["allowed_exts"];
 				else  $allowedexts = self::ExtractAllowedExtensions($options["allowed_exts"]);
 
@@ -848,7 +1085,7 @@
 			else if (!is_array($ids))  $result = array("success" => false, "error" => self::FETranslate("Invalid IDs specified."), "errorcode" => "invalid_ids");
 			else
 			{
-				// Only download allowed file extensions.
+				// Check allowed file extensions.
 				if (is_bool($options["allowed_exts"]))  $allowedexts = $options["allowed_exts"];
 				else  $allowedexts = self::ExtractAllowedExtensions($options["allowed_exts"]);
 
@@ -1668,6 +1905,9 @@
 			if ($action === $requestprefix . "refresh")  $result = self::ProcessRefreshAction($options);
 			else if ($action === $requestprefix . "thumbnail")  $result = self::ProcessThumnailAction($options);
 			else if ($action === $requestprefix . "rename")  $result = self::ProcessRenameAction($options);
+			else if ($action === $requestprefix . "file_info")  $result = self::ProcessFileInfoAction($options);
+			else if ($action === $requestprefix . "load_file")  $result = self::ProcessLoadFileAction($options);
+			else if ($action === $requestprefix . "save_file")  $result = self::ProcessSaveFileAction($options);
 			else if ($action === $requestprefix . "new_folder")  $result = self::ProcessNewFolderAction($options);
 			else if ($action === $requestprefix . "new_file")  $result = self::ProcessNewFileAction($options);
 			else if ($action === $requestprefix . "upload_init" || $action === $requestprefix . "upload")  $result = self::ProcessUploadAction($options);

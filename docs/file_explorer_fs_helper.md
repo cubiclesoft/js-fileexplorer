@@ -27,6 +27,9 @@ Example usage:
 		"thumb_create_url" => "https://cubiclesoft.com/myapp/?action=file_explorer_thumbnail&xsrftoken=qwerasdf",
 		"refresh" => true,
 		"rename" => true,
+		"file_info" => false,
+		"load_file" => false,
+		"save_file" => false,
 		"new_folder" => true,
 		"new_file" => ".txt",
 		"upload" => true,
@@ -1038,6 +1041,9 @@ The $options array accepts these options:
 * thumb_create_url - An optional string containing the URL to the thumbnail creation endpoint.  Recommended when using the `thumbs_dir` option.
 * refresh - A boolean that indicates whether or not the refresh handler is enabled.  Pretty much always set to true.
 * rename - A boolean that indicates whether or not the rename handler is enabled.
+* file_info - A boolean that indicates whether or not the file information handler is enabled.
+* load_file - A boolean that indicates whether or not the file retrieval handler is enabled.  Generally used in a file editor context.
+* save_file - A boolean that indicates whether or not the file save handler is enabled.  Generally used in a file editor context.
 * new_folder - A boolean that indicates whether or not the new folder handler is enabled.
 * new_file - A string containing the file extension to use for new files or a boolean of false to disable the new file handler.
 * upload - A boolean that indicates whether or not the upload handler is enabled.
