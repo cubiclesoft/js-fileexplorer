@@ -3264,8 +3264,8 @@
 		var UpdateCalculatedSelectedItemsRect = function(rect, hintrect) {
 			rect.startrow = (hintrect ? hintrect.startrow : 0);
 			rect.startcol = (hintrect ? hintrect.startcol : 0);
-			rect.endrow = (hintrect ? hintrect.endrow : folderitemcache.rows.length - 1);
-			rect.endcol = (hintrect ? hintrect.endcol : folderitemcache.cols.length - 1);
+			rect.endrow = (hintrect ? hintrect.endrow : (folderitemcache.rows.length ? folderitemcache.rows.length - 1 : 0));
+			rect.endcol = (hintrect ? hintrect.endcol : (folderitemcache.rows.length ? folderitemcache.cols.length - 1 : 0));
 
 			// Adjust startrow and endrow until they fall within two tops.
 			while (rect.startrow && rect.top < folderitemcache.rows[rect.startrow].top)  rect.startrow--;
@@ -3285,7 +3285,7 @@
 		};
 
 		var DoesRectOverlapItemRect = function(rect, x, y) {
-			return (rect.left < folderitemcache.cols[x].right && rect.right >= folderitemcache.cols[x].left && rect.bottom >= folderitemcache.rows[y].top && rect.top < folderitemcache.rows[y].bottoms[x]);
+			return (folderitemcache.size && rect.left < folderitemcache.cols[x].right && rect.right >= folderitemcache.cols[x].left && rect.bottom >= folderitemcache.rows[y].top && rect.top < folderitemcache.rows[y].bottoms[x]);
 		};
 
 		// Updates information and selected items for SelectBoxDragHandler().
