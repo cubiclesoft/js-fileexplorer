@@ -172,7 +172,7 @@
 .fe_fileexplorer_wrap .fe_fileexplorer_items_clipboard_overlay_paste_wrap.fe_fileexplorer_items_clipboard_contextmenu .fe_fileexplorer_items_clipboard_overlay { pointer-events: auto; }
 .fe_fileexplorer_wrap .fe_fileexplorer_items_clipboard_overlay_paste_wrap.fe_fileexplorer_items_show_clipboard_overlay_paste .fe_fileexplorer_items_clipboard_overlay { pointer-events: auto; }
 
-.fe_fileexplorer_wrap .fe_fileexplorer_select_box { position: absolute; box-sizing: border-box; border: 1px solid #0078D7; background-color: rgba(0, 120, 215, 0.5); }
+.fe_fileexplorer_wrap .fe_fileexplorer_select_box { position: absolute; box-sizing: border-box; border: 1px solid #0078D7; background-color: rgba(0, 120, 215, 0.33); }
 
 .fe_fileexplorer_wrap .fe_fileexplorer_statusbar_wrap { display: flex; white-space: nowrap; font-size: 0.75em; color: #14273E; }
 .fe_fileexplorer_wrap .fe_fileexplorer_statusbar_wrap.fe_fileexplorer_statusbar_wrap_multiline { display: block; }
