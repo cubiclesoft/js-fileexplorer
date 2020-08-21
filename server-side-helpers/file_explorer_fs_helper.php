@@ -1003,7 +1003,7 @@
 
 				if ($depth < $options["protect_depth"])  $result = array("success" => false, "error" => self::FETranslate("This folder cannot be modified."), "errorcode" => "access_denied");
 				else if (!self::HasAllowedExt($allowedexts, $options["allow_empty_ext"], $name))  $result = array("success" => false, "error" => self::FETranslate("The file extension is not allowed."), "errorcode" => "invalid_file_ext");
-				else if ($action === $requestprefix . "upload_init")
+				else if ($options["action"] === $options["requestprefix"] . "upload_init")
 				{
 					$createddir = (!is_dir($path));
 					@mkdir($path, 0775, true);
@@ -1392,7 +1392,7 @@
 					$copykey = "fe_copy_" . date("Y-m-d_H-i-s") . "_" . bin2hex(random_bytes(16));
 					$opdata = array(
 						"action" => "copy",
-						"multi" => ($action === $requestprefix . "copy_init"),
+						"multi" => ($options["action"] === $options["requestprefix"] . "copy_init"),
 						"totalbytes" => 0,
 						"itemsdone" => 0,
 						"faileditems" => 0,
@@ -1875,6 +1875,8 @@
 			if (!is_dir($basedir))  return array("success" => false, "error" => self::FETranslate("Supplied base directory does not exist."), "errorcode" => "invalid_base_dir");
 
 			// Normalize options.
+			$options["action"] = $action;
+			$options["requestprefix"] = $requestprefix;
 			$options["base_dir"] = str_replace("\\", "/", realpath($basedir));
 
 			if (isset($options["base_url"]))  $options["base_url"] = rtrim($options["base_url"], "/");
