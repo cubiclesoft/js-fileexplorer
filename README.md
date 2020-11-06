@@ -9,6 +9,8 @@ A zero dependencies, customizable, pure Javascript widget for navigating, managi
 
 Experience a clean, elegant presentation of folders and files in a mobile-friendly layout that looks and feels great on all devices.  CubicleSoft File Explorer is easily connected to any web application that needs to manage hierarchical objects (folders and files, database records, or even JSON, XML, etc).
 
+Check out a working product that uses this widget:  [PHP File Manager and Editor](https://github.com/cubiclesoft/php-filemanager)
+
 [![Donate](https://cubiclesoft.com/res/donate-shield.png)](https://cubiclesoft.com/donate/)
 
 If you use this project, don't forget to donate to support its development!
