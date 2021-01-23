@@ -5950,7 +5950,7 @@ console.log(selectanchorpos);
 
 					DispatchEvent('get_download_url', [result, currfolder, ids, entry]);
 
-					if (result && result.name && result.url)  e.dataTransfer.setData('DownloadURL', 'application/octet-stream:' + result.name + ':' + result.url);
+					if (result && result.name && result.url)  e.clipboardData.setData('DownloadURL', 'application/octet-stream:' + result.name + ':' + result.url);
 				}
 
 				$this.SetNamedStatusBarText('message', EscapeHTML($this.Translate((e.type === 'copy' ? 'Copy' : 'Cut') + ' to clipboard completed')), $this.settings.messagetimeout);
