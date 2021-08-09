@@ -4049,7 +4049,7 @@
 				if (movecopydata.dropeffect !== 'auto')  e.dataTransfer.dropEffect = movecopydata.dropeffect;
 				else if (e.ctrlKey)  e.dataTransfer.dropEffect = ($this.hasEventListener('copy') ? 'copy' : 'none');
 				else  e.dataTransfer.dropEffect = ($this.hasEventListener('move') ? 'move' : 'none');
-
+				movecopydata.lastevent = e
 				if (origeffect !== e.dataTransfer.dropEffect)  MoveCopyDragUpdateStatusText(e);
 			}
 		};
@@ -5099,6 +5099,11 @@
 					{
 					}
 
+					const pe = movecopydata.lastevent
+					// Check drop is at the same coordinates
+					if (e.x === pe.x && e.y === pe.y && e.dataTransfer.dropEffect === 'none' && pe.dataTransfer.dropEffect !== 'none') {
+						e.dataTransfer.dropEffect = pe.dataTransfer.dropEffect
+					}
 					if (dropdata && movecopydata.dropallowed)
 					{
 						MoveCopyDragUpdateStatusText(e, true);
