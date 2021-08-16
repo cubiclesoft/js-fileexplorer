@@ -5099,6 +5099,9 @@
 					{
 					}
 
+					// Update the drop effect.
+					MoveCopyDragOverHandler(e);
+
 					if (dropdata && movecopydata.dropallowed)
 					{
 						MoveCopyDragUpdateStatusText(e, true);
