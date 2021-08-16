@@ -308,7 +308,7 @@
 				}
 				catch (Exception $e)
 				{
-					return array("success" => false, "error" => self::CMS_Translate("Unable to load image."), "errorcode" => "image_load_failed");
+					return array("success" => false, "error" => self::FETranslate("Unable to load image."), "errorcode" => "image_load_failed");
 				}
 
 				try
@@ -334,19 +334,19 @@
 				}
 				catch (Exception $e)
 				{
-					return array("success" => false, "error" => self::CMS_Translate("Unable to crop/resize image."), "errorcode" => "image_crop_resize_failed");
+					return array("success" => false, "error" => self::FETranslate("Unable to crop/resize image."), "errorcode" => "image_crop_resize_failed");
 				}
 			}
 			else if (extension_loaded("gd") && function_exists("gd_info"))
 			{
 				// GD.
 				$info = @getimagesizefromstring($data);
-				if ($info === false)  return array("success" => false, "error" => self::CMS_Translate("Unable to load image."), "errorcode" => "image_load_failed");
+				if ($info === false)  return array("success" => false, "error" => self::FETranslate("Unable to load image."), "errorcode" => "image_load_failed");
 				$srcwidth = $info[0];
 				$srcheight = $info[1];
 				$type = $info[2];
 
-				if ($type !== IMAGETYPE_JPEG && $type !== IMAGETYPE_PNG && $type !== IMAGETYPE_GIF)  return array("success" => false, "error" => self::CMS_Translate("Unsupported image format."), "errorcode" => "unsupported_image_format");
+				if ($type !== IMAGETYPE_JPEG && $type !== IMAGETYPE_PNG && $type !== IMAGETYPE_GIF)  return array("success" => false, "error" => self::FETranslate("Unsupported image format."), "errorcode" => "unsupported_image_format");
 
 				if ($maxwidth === false)  $maxwidth = $srcwidth;
 				if ($maxheight === false)  $maxheight = $srcheight;
@@ -357,7 +357,7 @@
 				self::GetDestCropAndSize($cropx, $cropy, $cropw, $croph, $destwidth, $destheight, $srcwidth, $srcheight, $crop, $maxwidth, $maxheight);
 
 				$img = @imagecreatefromstring($data);
-				if ($img === false)  return array("success" => false, "error" => self::CMS_Translate("Unable to load image."), "errorcode" => "image_load_failed");
+				if ($img === false)  return array("success" => false, "error" => self::FETranslate("Unable to load image."), "errorcode" => "image_load_failed");
 				$data = "";
 
 				$img2 = @imagecreatetruecolor($destwidth, $destheight);
@@ -365,7 +365,7 @@
 				{
 					imagedestroy($img);
 
-					return array("success" => false, "error" => self::CMS_Translate("Unable to crop/resize image."), "errorcode" => "image_crop_resize_failed");
+					return array("success" => false, "error" => self::FETranslate("Unable to crop/resize image."), "errorcode" => "image_crop_resize_failed");
 				}
 
 				// Make fully transparent (if relevant).
@@ -394,7 +394,7 @@
 				return array("success" => true, "data" => $data);
 			}
 
-			return array("success" => false, "error" => self::CMS_Translate("A supported image library is not installed/configured."), "errorcode" => "missing_image_library");
+			return array("success" => false, "error" => self::FETranslate("A supported image library is not installed/configured."), "errorcode" => "missing_image_library");
 		}
 
 		public static function GetTooltip($path, $file, $windows, $type, &$info)
