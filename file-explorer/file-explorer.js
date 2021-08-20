@@ -7355,7 +7355,7 @@ console.log(selectanchorpos);
 				}
 				else
 				{
-					fe.SetNamedStatusBarText('message', EscapeHTML(FormatStr(fe.Translate('Creating a new folder failed.' + (typeof success === 'string' ? '  {0}' : '')), success)), fe.settings.messagetimeout);
+					fe.SetNamedStatusBarText('message', EscapeHTML(FormatStr(fe.Translate('Creating a new folder failed.' + (typeof newentry === 'string' ? '  {0}' : '')), newentry)), fe.settings.messagetimeout);
 				}
 			};
 
