@@ -62,6 +62,8 @@
 
 		public static function GetSanitizedFileAndExtraPath(&$extrapath, $name, $allowdotfolders = false)
 		{
+			$extrapath = "";
+
 			$file = self::GetRequestVar($name);
 			if ($file === false)  return false;
 
