@@ -160,9 +160,7 @@
 
 		public static function HandleUpload($filekey, $options = array())
 		{
-			if (!isset($_REQUEST["fileuploader"]) && !isset($_POST["fileuploader"]))  return false;
-
-			header("Content-Type: application/json");
+			if (!isset($_REQUEST["fileuploader"]) && !isset($_POST["fileuploader"]))  return array("success" => false, "error" => "No upload or missing 'fileuploader'.", "errorcode" => "no_upload");
 
 			if (isset($options["allowed_exts"]))
 			{
@@ -199,7 +197,7 @@
 					$name = substr($name, 0, -(strlen($files[0]["ext"]) + 1));
 
 					if (isset($options["filename_callback"]) && is_callable($options["filename_callback"]))  $filename = call_user_func_array($options["filename_callback"], array($name, strtolower($files[0]["ext"]), $files[0]));
-					else if (isset($options["filename"]))  $filename = str_replace(array("{name}", "{ext}"), array($name, strtolower($files[0]["ext"])), $options["filename"]);
+					else if (isset($options["filename"]))  $filename = (isset($options["fixed_filename"]) && $options["fixed_filename"] ? $options["filename"] : str_replace(array("{name}", "{ext}"), array($name, strtolower($files[0]["ext"])), $options["filename"]));
 					else  $filename = false;
 
 					if (!is_string($filename))  $result = array("success" => false, "error" => self::FHTranslate("The server did not set a valid filename."), "errorcode" => "invalid_filename");
@@ -241,7 +239,7 @@
 					$name = substr($files[0]["name"], 0, -(strlen($files[0]["ext"]) + 1));
 
 					if (isset($options["filename_callback"]) && is_callable($options["filename_callback"]))  $filename = call_user_func_array($options["filename_callback"], array($name, strtolower($files[0]["ext"]), $files[0]));
-					else if (isset($options["filename"]))  $filename = str_replace(array("{name}", "{ext}"), array($name, strtolower($files[0]["ext"])), $options["filename"]);
+					else if (isset($options["filename"]))  $filename = (isset($options["fixed_filename"]) && $options["fixed_filename"] ? $options["filename"] : str_replace(array("{name}", "{ext}"), array($name, strtolower($files[0]["ext"])), $options["filename"]));
 					else  $filename = false;
 
 					if (!is_string($filename))  $result = array("success" => false, "error" => self::FHTranslate("The server did not set a valid filename."), "errorcode" => "invalid_filename");
@@ -261,7 +259,10 @@
 
 			if (isset($options["return_result"]) && $options["return_result"])  return $result;
 
+			header("Content-Type: application/json");
+
 			echo json_encode($result, JSON_UNESCAPED_SLASHES);
+
 			exit();
 		}
 
