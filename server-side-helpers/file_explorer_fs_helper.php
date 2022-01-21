@@ -1039,12 +1039,15 @@
 
 					$options2 = array(
 						"filename" => $path . "/" . $name . ".tmp",
+						"fixed_filename" => true,
 						"limit" => (int)$size,
 						"return_result" => true
 					);
 
 					$_REQUEST["fileuploader"] = 1;
 					$result = FileUploadHelper::HandleUpload("file", $options2);
+
+					clearstatcache();
 
 					// Finalize the file.
 					if ($result["success"] && @filesize($path . "/" . $name . ".tmp") >= $size)
