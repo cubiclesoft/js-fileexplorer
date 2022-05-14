@@ -5403,8 +5403,6 @@ console.log('MoveCopyEndHandler');
 			}
 			else
 			{
-				lastmousedownevent = e;
-
 				UpdateCurrFolderItemCache(false);
 
 				// If the user has selected an item, focus it.
@@ -5412,6 +5410,7 @@ console.log('MoveCopyEndHandler');
 				{
 					var elem = e.target.closest('.fe_fileexplorer_item_wrap');
 					var orignumselected = numselecteditems;
+					var origselecteditem = (elem.dataset.feid in selecteditemsmap);
 
 					if (e.ctrlKey || e.target.tagName === 'INPUT' || e.button == 2 || selectmodemulti)
 					{
@@ -5448,7 +5447,7 @@ console.log('MoveCopyEndHandler');
 						elems.itemsclipboardoverlaypastewrap.classList.add('fe_fileexplorer_items_clipboard_contextmenu');
 					}
 
-					if (orignumselected && e.detail > 1)
+					if (orignumselected && (e.detail > 1 || (lastselecttouch && origselecteditem && lastmousedownevent && e.timeStamp - lastmousedownevent.timeStamp < 500)))
 					{
 						// Open selected items on double-click.
 						$this.OpenSelectedItems();
@@ -5544,6 +5543,8 @@ console.log(selectanchorpos);
 					window.addEventListener('blur', SelectBoxEndHandler, true);
 					elems.itemsscrollwrap.addEventListener('wheel', SelectBoxScrollWheelHandler);
 				}
+
+				lastmousedownevent = e;
 
 				if (lastselecttouch)
 				{
@@ -7996,7 +7997,7 @@ console.log(selectanchorpos);
 	var FileExplorerTool_ItemCheckboxes = function(fe) {
 		if (!(this instanceof FileExplorerTool_ItemCheckboxes))  return new FileExplorerTool_ItemCheckboxes(fe);
 
-		// Do not create the tool if the device's primary input is coarse and the tool is not specifically enabled.
+		// Do not create the tool if the device's primary input is not coarse and the tool is not specifically enabled.
 		if (!matchMedia('(pointer: coarse)').matches && !fe.settings.tools.item_checkboxes)  return;
 
 		var node = fe.AddToolbarButton('fe_fileexplorer_folder_tool_item_checkboxes', fe.Translate('Item Checkboxes'));
