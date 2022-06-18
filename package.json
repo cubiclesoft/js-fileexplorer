@@ -1,0 +1,42 @@
+{
+	"name": "js-fileexplorer",
+	"version": "1.0.0",
+	"description": "A zero dependencies, customizable, pure Javascript widget for navigating, managing (move, copy, delete), uploading, and downloading files and folders or other hierarchical object structures on any modern web browser.",
+	"organization": "CubicleSoft",
+	"main": "file-explorer/file-explorer.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/cubiclesoft/js-fileexplorer.git"
+	},
+	"bugs": "https://github.com/cubiclesoft/js-fileexplorer/issues",
+	"github": "https://github.com/cubiclesoft/js-fileexplorer",
+	"keywords": [
+	"file-explorer",
+		"widget",
+		"filemanager",
+		"file-manager",
+		"file-uploader",
+		"file-download",
+		"folder-viewer"
+	],
+	"author": "CubicleSoft",
+	"license": "MIT or LGPL (your choice)",
+	"bugs": {
+		"url": "https://github.com/cubiclesoft/js-fileexplorer/issues"
+	},
+	"homepage": "https://github.com/cubiclesoft/js-fileexplorer",
+	"files": [
+		"file-explorer/file-explorer.css",
+		"file-explorer/file-explorer.js",
+		"file-explorer/fileexplorer_actions.woff",
+		"file-explorer/fileexplorer_sprites.png",
+		"server-side-helpers/crc32_stream.php",
+		"server-side-helpers/deflate_stream.php",
+		"server-side-helpers/file_explorer_fs_helper.php",
+		"server-side-helpers/file_upload_helper.php",
+		"server-side-helpers/zip_stream_writer.php"
+	]
+}
