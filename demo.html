@@ -198,6 +198,10 @@ console.log(e);
 		},
 
 		onrename: function(renamed, folder, entry, newname) {
+console.log('onrename');
+console.log(entry);
+console.log(newname);
+
 			// Simulate network delay.
 			setTimeout(function() {
 				// The entry is a copy of the original, so it is okay to modify any aspect of it, including id.
@@ -210,10 +214,12 @@ console.log(e);
 		},
 
 		onopenfile: function(folder, entry) {
+console.log('onopenfile');
 console.log(entry);
 		},
 
 		onnewfolder: function(created, folder) {
+console.log('onnewfolder');
 			// Simulate network delay.
 			setTimeout(function() {
 				var entry = { name: 'New Folder', type: 'folder', id: 'asdfasdffolder123', hash: 'asdfasdffolder123' };
@@ -223,6 +229,7 @@ console.log(entry);
 		},
 
 		onnewfile: function(created, folder) {
+console.log('onnewfile');
 			// Simulate network delay.
 			setTimeout(function() {
 				var entry = { name: 'New File.txt', type: 'file', id: 'asdfasdffile123', hash: 'asdfasdffile123' };
@@ -232,6 +239,7 @@ console.log(entry);
 		},
 
 		oninitupload: function(startupload, fileinfo) {
+console.log('oninitupload');
 console.log(fileinfo.file);
 console.log(JSON.stringify(fileinfo.folder.GetPathIDs()));
 
@@ -281,6 +289,7 @@ console.log(JSON.stringify(fileinfo.folder.GetPathIDs()));
 
 		// Optional upload handler function to finalize an uploaded file on a server (e.g. move from a temporary directory to the final location).
 		onfinishedupload: function(finalize, fileinfo) {
+console.log('onfinishedupload');
 console.log(fileinfo);
 			// Simulate network delay.
 			setTimeout(function() {
@@ -290,11 +299,15 @@ console.log(fileinfo);
 
 		// Optional upload handler function to receive permanent error notifications.
 		onuploaderror: function(fileinfo, e) {
+console.log('onuploaderror');
 console.log(e);
 console.log(fileinfo);
 		},
 
 		oninitdownload: function(startdownload, folder, ids, entries) {
+console.log('oninitdownload');
+console.log(ids);
+console.log(entries);
 			// Simulate network delay.
 			setTimeout(function() {
 				// Set a URL and params to send with the request to the server.
@@ -331,11 +344,19 @@ console.log(options);
 
 		// Calculated information must be fully synchronous (i.e. no AJAX calls).  Chromium only.
 		ondownloadurl: function(result, folder, ids, entry) {
+console.log('ondownloadurl');
+console.log(folder);
+console.log(ids);
+console.log(entry);
 			result.name = (ids.length === 1 ? (entry.type === 'file' ? entry.name : entry.name + '.zip') : 'download-' + Date.now() + '.zip');
 			result.url = 'http://127.0.0.1/filemanager/?action=download&xsrfdata=asdfasdfasdf&xsrftoken=asdfasdf&path=' + encodeURIComponent(JSON.stringify(folder.GetPathIDs())) + '&ids=' + encodeURIComponent(JSON.stringify(ids));
 		},
 
 		oncopy: function(copied, srcpath, srcids, destfolder) {
+console.log('oncopy');
+console.log(srcpath);
+console.log(srcids);
+console.log(destfolder.GetPathIDs());
 			// Simulate network delay.
 			setTimeout(function() {
 				// Fill an array with copied destination folder entries from the server.
@@ -346,6 +367,10 @@ console.log(options);
 		},
 
 		onmove: function(moved, srcpath, srcids, destfolder) {
+console.log('onmove');
+console.log(srcpath);
+console.log(srcids);
+console.log(destfolder.GetPathIDs());
 			// Simulate network delay.
 			setTimeout(function() {
 				// Fill an array with moved destination folder entries from the server.
@@ -356,6 +381,11 @@ console.log(options);
 		},
 
 		ondelete: function(deleted, folder, ids, entries, recycle) {
+console.log('ondelete');
+console.log(folder);
+console.log(ids);
+console.log(entries);
+console.log(recycle);
 			// Ask the user if they really want to delete/recycle the items.
 			if (!recycle && !confirm('Are you sure you want to permanently delete ' + (entries.length == 1 ? '"' + entries[0].name + '"' : entries.length + ' items') +  '?'))  deleted('Cancelled deletion');
 			else
