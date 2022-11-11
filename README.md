@@ -210,7 +210,7 @@ The `options` object passed to the FileExplorer class accepts the following opti
 
 * group - An optional string containing a group name.  When specified, this must be a unique string that indicates a compatible widget backend to allow cross-widget drag-and-drop and cut/copy/paste to function properly.  When not specified, the instance receives a group name unique to the instance that disables the aforementioned cross-widget features.
 * alwaysfocused - A boolean that indicates whether or not the widget's appearance never loses focus (Default is false).  This only affects visual appearance and does not stop onfocus/onblur event callbacks from firing.
-* capturebrowser - A boolean that indicates whether or not to capture the hardward back and forward mouse buttons when the mouse is hovering over the widget (Default is false).  Read the 'Known Limitations' section before enabling this feature.
+* capturebrowser - A boolean that indicates whether or not to capture the hardware back and forward mouse buttons when the mouse is hovering over the widget (Default is false).  Read the 'Known Limitations' section before enabling this feature.
 * messagetimeout - An integer containing the number of milliseconds to show short-lived messages in the status bar (Default is 2000).
 * displayunits - A string containing one of 'iec_windows', 'iec_formal', or 'si' to specify what units to use when displaying file sizes to the user (Default is 'iec_windows').
 * adjustprecision - A boolean indicating whether or not to adjust the final precision when displaying file sizes to the user (Default is true).
