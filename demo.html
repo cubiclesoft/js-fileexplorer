@@ -256,6 +256,8 @@ console.log(JSON.stringify(fileinfo.folder.GetPathIDs()));
 			}
 			else
 			{
+				// For those who wish to handle file uploads via external libraries, fileinfo.file contains the File object.
+
 				// Simulate network delay.
 				setTimeout(function() {
 					// Set a URL, headers, and params to send with the file data to the server.
